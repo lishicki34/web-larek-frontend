@@ -37,12 +37,14 @@ export class Card<T> extends Component<IProduct> {
         
         if (this._buttonInBasket != null) {
             if (isItemInBasket) {
-                this._buttonInBasket.textContent = 'Удалить из корзины';
+                this.setText(this._buttonInBasket, 'Удалить из корзины'); //Так лучше, согласен!
+                // this._buttonInBasket.textContent = 'Удалить из корзины';
                 this._buttonInBasket.addEventListener('click', () => {
                     this.events.emit('removeFromBasket:change', item);
                 });
             } else {
-                this._buttonInBasket.textContent = 'В корзину';
+                this.setText(this._buttonInBasket, 'В корзину');
+                // this._buttonInBasket.textContent = 'В корзину';
                 this._buttonInBasket.addEventListener('click', () => {
                     this.events.emit('addInBasket:change', item);
                 });           
@@ -52,7 +54,8 @@ export class Card<T> extends Component<IProduct> {
         if (this._buttonDelete) {
             this._buttonDelete.addEventListener('click', () => {
                 this.events.emit('removeFromBasketInBasket:change', item);
-                this._buttonDelete.textContent = null;
+                this.setText(this._buttonDelete, null);
+                // this._buttonDelete.textContent = null;
             });
         }
     }
