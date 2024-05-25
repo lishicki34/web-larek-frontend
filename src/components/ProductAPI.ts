@@ -1,11 +1,11 @@
-import {Api, ApiListResponse} from "./base/api"
+import {Api, ApiListResponse} from "./base/Api"
 import {ICard, OpenCard, IOrderResult, IOrderForm, IContactsForm} from "../types/index";
 import {BasketModel} from "./Basket";
 
 export interface IProductAPI {
     getCardList: () => Promise<ICard[]>;
     getCardItem: (id: string) => Promise<ICard>;
-    getOpenCard: (id: string) => Promise<OpenCard>;
+    // getOpenCard: (id: string) => Promise<OpenCard>;
     orderProduct: (order: IOrderForm, contacts: IContactsForm, basketModel: BasketModel) => Promise<IOrderResult>;
 }
 
@@ -36,11 +36,11 @@ export class ProductAPI extends Api implements IProductAPI {
         );
     }
 
-    getOpenCard(id: string): Promise<OpenCard> {
-        return this.get(`/product/${id}`).then(
-            (data: OpenCard) => data
-        );
-    }
+    // getOpenCard(id: string): Promise<OpenCard> {
+    //     return this.get(`/product/${id}`).then(
+    //         (data: OpenCard) => data
+    //     );
+    // }
 
     orderProduct(order: IOrderForm, contacts: IContactsForm, basketModel: BasketModel): Promise<IOrderResult> {
         return this.post('/order', {

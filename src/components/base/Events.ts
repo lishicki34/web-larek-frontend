@@ -85,3 +85,6 @@ export class EventEmitter implements IEvents {
     }
 }
 
+export enum Events {
+    ORDER_SUBMIT = 'order:submit',
+}

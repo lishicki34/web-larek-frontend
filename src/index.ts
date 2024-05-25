@@ -1,6 +1,6 @@
 import './scss/styles.scss';
 
-import {EventEmitter} from './components/base/events';
+import {EventEmitter, Events} from './components/base/Events';
 import {CDN_URL, API_URL} from './utils/constants';
 import {Modal} from './components/Modal';
 import {ensureElement} from '../src/utils/utils';
@@ -11,7 +11,7 @@ import {Card} from './components/Card';
 import {cloneTemplate} from '../src/utils/utils';
 import {IProduct, CatalogChangeEvent,IOrderForm, IContactsForm} from './types/index';
 import {Basket} from './components/Basket';
-import {Order, Contacts} from './components/Order';
+import {OrderForm, ContactsForm} from './components/OrderForm';
 import {Success} from './components/Success';
 
 const events = new EventEmitter();
@@ -29,10 +29,10 @@ const contactsTemplate = ensureElement<HTMLTemplateElement>('#contacts');
 const page = new Page(document.body, events);
 const modal = new Modal(ensureElement<HTMLElement>('#modal-container'), events);
 const basket = new Basket(cloneTemplate(basketTemplate), events);
-const order = new Order(cloneTemplate(orderTemplate), events, {
+const order = new OrderForm(cloneTemplate(orderTemplate), events, {
 	onClick: (buttonName) => events.emit('order.payment:change', {field: 'payment', value: buttonName })
 });
-const contacts = new Contacts(cloneTemplate(contactsTemplate), events);
+const contacts = new ContactsForm(cloneTemplate(contactsTemplate), events);
 
 export const appData = new AppState({}, events);
 
@@ -103,7 +103,7 @@ events.on('order:open', () => {
 });
 
 // Открыть  форму заказа с телефоном и почтой
-events.on('contacts:open', () => {
+events.on('order:submit', () => {
 	modal.render({
 		content: contacts.render({
 			phone: '',
@@ -166,7 +166,6 @@ events.on('removeFromBasketInBasket:change', (item: IProduct) => {
 // Продукт открыт
 events.on('preview:changed', (item: IProduct) => {
 	const showItem = (item: IProduct) => {
-        const basketItems = appData.basketModel.items;
 		const card = new Card (
 			cloneTemplate(cardPreviewTemplate),
 			events,
@@ -209,7 +208,7 @@ events.on('modal:open', () => {
 events.on('modal:close', () => {
 	page.locked = false;
 });
-
+// Валидация
 events.on('formErrorsAddress:change', (errors: Partial<IOrderForm>) => {
 	const { address, payment} = errors;
 	order.valid = !address && !payment;

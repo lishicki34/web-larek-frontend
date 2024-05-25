@@ -1,5 +1,5 @@
 import { Component } from "./base/Component";
-import { EventEmitter } from "./base/events";
+import { EventEmitter } from "./base/Events";
 import { IProduct, IBasketView, IBasketModel} from "../types";
 
 export class Basket extends Component<IBasketView> {
@@ -27,11 +27,12 @@ export class Basket extends Component<IBasketView> {
     
     set items(items: HTMLElement[]) {
         this._list.replaceChildren(...items); 
-        if (items.length > 0) {
-            this.setDisabled(this._button, false);
-        } else {
-            this.setDisabled(this._button, true);
-        }
+        // if (items.length > 0) {
+        //     this.setDisabled(this._button, false);
+        // } else {}
+        const isActive = items.length > 0;
+            this.setDisabled(this._button, !isActive);
+        
     }
 
     set total(value: number | null) {

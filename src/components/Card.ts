@@ -1,6 +1,6 @@
 import {Component} from "./base/Component";
 import {IProduct} from "../types/index";
-import {EventEmitter} from "./base/events";
+import {EventEmitter} from "./base/Events";
 import {ICardActions} from "../types/index";
 
 export class Card<T> extends Component<IProduct> {
@@ -92,11 +92,13 @@ export class Card<T> extends Component<IProduct> {
         const displayText = (value === null) ? "Бесценно" : `${value} синапсов`;
         this.setText(this._price, displayText);
 
-        if (value === null) {
-            this.setDisabled(this._buttonInBasket, true);
-        } else {
-            this.setDisabled(this._buttonInBasket, false);
-        }
+        this.setDisabled(this._buttonInBasket, value === null);
+
+        // if (value === null) {
+        //     this.setDisabled(this._buttonInBasket, true);
+        // } else {
+        //     this.setDisabled(this._buttonInBasket, false);
+        // }
     }
 
     get price(): number {
@@ -116,23 +118,28 @@ export class Card<T> extends Component<IProduct> {
         this.setText(this._category, value);
         switch(value) {
             case 'софт-скил':
-                this._category?.classList.add('card__category_soft');
+                this.toggleClass(this._category, 'card__category_soft', true);
+                // this._category?.classList.add('card__category_soft');
                 break;
             case 'другое':
-                this._category?.classList.add('card__category_other');
+                this.toggleClass(this._category, 'card__category_other', true);
+                // this._category?.classList.add('card__category_other');
                 break;
             case 'хард-скил':
-                this._category?.classList.add('card__category_hard');
+                this.toggleClass(this._category, 'card__category_hard', true);
+                // this._category?.classList.add('card__category_hard');
                 break;
             case 'дополнительное':
-                this._category?.classList.add('card__category_additional');
+                this.toggleClass(this._category, 'card__category_additional', true);
+                // this._category?.classList.add('card__category_additional');
                 break;
             case 'кнопка':
-                this._category?.classList.add('card__category_button');
+                this.toggleClass(this._category, 'card__category_button', true);
+                // this._category?.classList.add('card__category_button');
                 break;
             default:
                 break;
-            }
+            }  
     }
 
     get category(): string {
